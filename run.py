@@ -18,6 +18,7 @@ app.config['SECRET_KEY'] = key
 from apps.post.models import post_info
 from apps.post.depends import create_post
 from apps.post.depends import get_post
+from apps.weather.depends import get_weather
 
 
 @app.route('/')
