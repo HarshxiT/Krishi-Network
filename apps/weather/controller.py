@@ -1,6 +1,5 @@
 import os
 from flask import jsonify, request
-from run import db
 import requests
 
 def getWeather():

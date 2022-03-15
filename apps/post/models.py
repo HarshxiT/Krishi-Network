@@ -1,5 +1,5 @@
 import datetime
-from run import db
+from apps import db
 from geoalchemy2 import Geometry
 
 

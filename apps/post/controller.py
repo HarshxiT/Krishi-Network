@@ -2,8 +2,9 @@ from flask import jsonify, request, flash
 import datetime
 from sqlalchemy import func
 from apps.post.models import Post
-from run import db
+from apps import db
 import timeago
+
 from werkzeug.exceptions import HTTPException
 def createPost():
    try:
