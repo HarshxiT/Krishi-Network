@@ -3,24 +3,25 @@
 
 from flask import Flask, jsonify, request
 # from geoalchemy2 import Geometry
-
 from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
-db = SQLAlchemy(app)
 uri=os.getenv("DB_URI")
 key=os.getenv("S_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.config['SECRET_KEY'] = key
+db = SQLAlchemy(app)
 
-from apps.post.models import post_info
-from apps.post.depends import create_post
-from apps.post.depends import get_post
-from apps.weather.depends import get_weather
+db.create_all()
 
 
-@app.route('/')
-def hello():
-    return "Hello World!"
+from apps.post.routes import post_bp
+from apps.weather.routes import weather_bp
+from apps.utility.controller import handle_exception,handle_Hexception
+
+app.register_blueprint(post_bp, url_prefix='/api')
+app.register_blueprint(weather_bp, url_prefix='/api')
+
