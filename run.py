@@ -21,7 +21,7 @@ db.init_app(app)
 
 from apps.post.routes import post_bp
 from apps.weather.routes import weather_bp
-# from apps.utility.controller import handle_exception,handle_Hexception
+from apps.utility.controller import handle_exception,handle_Hexception
 
 app.register_blueprint(post_bp, url_prefix='/api')
 app.register_blueprint(weather_bp, url_prefix='/api')
