@@ -2,7 +2,7 @@ from flask import jsonify, request, flash
 import datetime
 from sqlalchemy import func
 from apps.post.models import Post
-from run import db
+from xtension import db
 import timeago
 from werkzeug.exceptions import HTTPException
 def createPost():
@@ -21,19 +21,19 @@ def createPost():
 
 
 def getPost():
-   try:
-      args = request.args
-      lon = str(args.get('lon'))
-      lat = str(args.get('lat'))
-      # if None in (lon, lat):
-      #     raise Exception("Invalid")
+   # try:
+   args = request.args
+   lon = str(args.get('lon'))
+   lat = str(args.get('lat'))
+   # if None in (lon, lat):
+   #     raise Exception("Invalid")
 
-      q = db.session.query(Post.message,Post.location,Post.created_on).filter(Post.active==True).order_by(func.ST_Distance(Post.location,func.Geometry(func.ST_GeomFromText('POINT({} {})'.format(lon, lat))))).all()
+   q = db.session.query(Post.message,Post.location,Post.created_on).order_by(func.ST_Distance(Post.location,func.Geometry(func.ST_GeomFromText('POINT({} {})'.format(lon, lat))))).all()
 
-      l=[{"message":i.message,"location":str(i.location),"created_on":timeago.format(datetime.datetime.now(),i.created_on)} for i in q]
-      obj={}
-      obj["success"]=True
-      obj['results'] = l[0:10]
-      return jsonify(obj),200
-   except Exception as e:
-      raise Exception("Something bad happened")
+   l=[{"message":i.message,"location":str(i.location),"created_on":timeago.format(datetime.datetime.now(),i.created_on)} for i in q]
+   obj={}
+   obj["success"]=True
+   obj['results'] = l[0:10]
+   return jsonify(obj),200
+   # except Exception as e:
+   #    raise Exception("Something bad happened")
